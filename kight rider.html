@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knight Rider Light Animation</title>
+    <style>
+        body {
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .light-bar {
+            display: flex;
+            gap: 1px;
+            margin-bottom: 20px;
+        }
+        .light {
+            width: 150px;
+            height: 50px;
+            background-color: #222;
+            border:1px solid black;
+            transition: background-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+            opacity: 0.4;
+        }
+        .active {
+            opacity: 1;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 6px 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #444;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #666;
+        }
+        hr{
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+<h1>Knight Rider Light Animation</h1>
+<hr>
+<div class="light-bar" id="lightBar"></div>
+<hr>
+
+<div class="controls">
+    <button onclick="startAnimation()">Start</button>
+    <button onclick="stopAnimation()">Stop</button>
+</div>
+
+
+<script>
+    const lightBar = document.getElementById("lightBar");
+    const lights = [];
+    const colorSequence = ['red', 'darkred', 'firebrick', 'indianred', 'burlywood'];
+    let interval;
+    let currentIndex = 0;
+    let direction = 1;
+
+
+    for (let i = 0; i < 5; i++) {
+        const light = document.createElement("div");
+        light.classList.add("light");
+        lightBar.appendChild(light);
+        lights.push(light);
+    }
+
+    function updateLights() {
+        lights.forEach((light, index) => {
+            light.classList.remove("active");
+            light.style.backgroundColor = '#222';
+            light.style.boxShadow = 'none';
+        });
+
+        const color = colorSequence[currentIndex % colorSequence.length];
+        const activeLight = lights[currentIndex];
+        activeLight.classList.add("active");
+        activeLight.style.backgroundColor = color;
+        activeLight.style.boxShadow = `0 0 20px ${color}`;
+
+        currentIndex += direction;
+        if (currentIndex === lights.length - 1 || currentIndex === 0) {
+            direction *= -1;
+        }
+    }
+
+    function startAnimation() {
+        if (!interval) {
+            interval = setInterval(updateLights, 150);
+        }
+    }
+
+    function stopAnimation() {
+        clearInterval(interval);
+        interval = null;
+    }
+</script>
+</body>
+</html>
